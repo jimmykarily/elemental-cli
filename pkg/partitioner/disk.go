@@ -342,6 +342,8 @@ func (dev *Disk) ExpandLastPartition(size uint) (string, error) {
 
 	pc.SetPartitionTableLabel(dev.label)
 
+	fmt.Printf("dev.parts = %+v\n", dev.parts)
+
 	if len(dev.parts) == 0 {
 		return "", errors.New("There is no partition to expand")
 	}
