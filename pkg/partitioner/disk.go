@@ -327,6 +327,8 @@ func (dev Disk) FindPartitionDevice(partNum int) (string, error) {
 // ExpandLastPartition expands the latest partition in the disk. Size is expressed in MiB here
 // Size is expressed in MiB here
 func (dev *Disk) ExpandLastPartition(size uint) (string, error) {
+	fmt.Println("************************************")
+	fmt.Printf("dev.parts = %+v\n", dev.parts)
 	pc := NewPartedCall(dev.String(), dev.runner)
 
 	//Check we have loaded partition table data
@@ -362,6 +364,7 @@ func (dev *Disk) ExpandLastPartition(size uint) (string, error) {
 		if size < part.SizeS {
 			return "", errors.New("Layout plugin can only expand a partition, not shrink it")
 		}
+		fmt.Printf("dev.parts = %+v\n", dev.parts)
 		freeS := dev.computeFreeSpaceWithoutLast()
 		if size > freeS {
 			return "", fmt.Errorf("not enough free space for to expand last partition up to %d sectors", size)
