@@ -362,6 +362,7 @@ func (dev *Disk) ExpandLastPartition(size uint) (string, error) {
 		if size < part.SizeS {
 			return "", errors.New("Layout plugin can only expand a partition, not shrink it")
 		}
+		fmt.Printf("dev.parts = %+v\n", dev.parts)
 		freeS := dev.computeFreeSpaceWithoutLast()
 		if size > freeS {
 			return "", fmt.Errorf("not enough free space for to expand last partition up to %d sectors", size)
