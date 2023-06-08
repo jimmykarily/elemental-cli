@@ -152,6 +152,7 @@ func (pc *PartedCall) WipeTable(wipe bool) {
 }
 
 func (pc PartedCall) Print() (string, error) {
+	fmt.Printf("pc.dev = %+v\n", pc.dev)
 	out, err := pc.runner.Run("parted", "--script", "--machine", "--", pc.dev, "unit", "s", "print")
 	return string(out), err
 }

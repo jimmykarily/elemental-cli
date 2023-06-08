@@ -117,6 +117,9 @@ func (dev *Disk) Exists() bool {
 
 func (dev *Disk) Reload() error {
 	pc := NewPartedCall(dev.String(), dev.runner)
+	fmt.Printf("pc = %+v\n", pc)
+	fmt.Printf("pc.dev = %+v\n", pc.dev)
+	fmt.Printf("dev.String() = %+v\n", dev.String())
 	prnt, err := pc.Print()
 	fmt.Printf("prnt = %+v\n", prnt)
 	if err != nil {
