@@ -118,6 +118,7 @@ func (dev *Disk) Exists() bool {
 func (dev *Disk) Reload() error {
 	pc := NewPartedCall(dev.String(), dev.runner)
 	prnt, err := pc.Print()
+	fmt.Printf("prnt = %+v\n", prnt)
 	if err != nil {
 		return fmt.Errorf("error: %w. output: %s", err, prnt)
 	}
@@ -129,6 +130,7 @@ func (dev *Disk) Reload() error {
 	// --fix flag to solve this issue transparently on the fly on any parted call.
 	// However this option is not yet present in all major distros.
 	if unallocatedRegexp.Match([]byte(prnt)) {
+		fmt.Println("running sgdisk")
 		// Parted has not a proper way to doing it in non interactive mode,
 		// because of that we use sgdisk for that...
 		out, err := dev.runner.Run("sgdisk", "-e", dev.device)
@@ -137,6 +139,7 @@ func (dev *Disk) Reload() error {
 		}
 		// Reload disk data with fixed headers
 		prnt, err = pc.Print()
+		fmt.Printf("prnt #2 = %+v\n", prnt)
 		if err != nil {
 			return fmt.Errorf("error: %w. output: %s", err, prnt)
 		}
@@ -155,6 +158,8 @@ func (dev *Disk) Reload() error {
 		return err
 	}
 	partitions := pc.GetPartitions(prnt)
+	fmt.Printf("prnt #3 = %+v\n", prnt)
+	fmt.Printf("partitions from print #3 = %+v\n", partitions)
 	dev.sectorS = sectorS
 	dev.lastS = lastS
 	dev.parts = partitions
